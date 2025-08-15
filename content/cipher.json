@@ -1,0 +1,8 @@
+{
+  "v": "1",
+  "kdf": "PBKDF2",
+  "params": { "iterations": 250000, "salt": "AAAAAAAAAAAAAAAAAAAAAA==" },
+  "cipher": "AES-GCM",
+  "iv": "AAAAAAAAAAAAAAAAAAA=",
+  "ciphertext": "" 
+} 

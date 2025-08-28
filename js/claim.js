@@ -2,7 +2,7 @@
   const $ = (id) => document.getElementById(id);
   const status = (msg) => { $("status").textContent = msg; };
 
-  const resp = await fetch("config.json");
+  const resp = await fetch("config.json?ts=" + Date.now());
   const config = await resp.json();
 
   let provider, signer, account, network;

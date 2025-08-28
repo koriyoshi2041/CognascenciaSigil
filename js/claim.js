@@ -51,6 +51,18 @@
     } else {
       status("Connected");
     }
+
+    try {
+      // show owner sponsor if current account is contract owner
+      const abi = await (await fetch("abi.json")).json();
+      const c = new ethers.Contract(config.contractAddress, abi, signer);
+      const ow = await c.owner();
+      if (ow && ow.toLowerCase() === account.toLowerCase()) {
+        $("ownerSponsorNow").style.display = "inline-block";
+      } else {
+        $("ownerSponsorNow").style.display = "none";
+      }
+    } catch (_) { /* older ABI may not have owner(); ignore */ }
   };
 
   $("claim").onclick = async () => {
@@ -94,6 +106,28 @@
       await navigator.clipboard.writeText(text);
       status("Request copied. Send it to the sponsor to complete the mint.");
       console.log("Sponsored claim request:", text);
+    } catch (e) {
+      console.error(e);
+      status(e.shortMessage || e.message || String(e));
+    }
+  };
+
+  $("ownerSponsorNow").onclick = async () => {
+    try {
+      if (!signer) { status("Connect first"); return; }
+      const code = $("c1").value || "";
+      const recipient = $("recipient").value || "";
+      if (!code) { status("Enter C1"); return; }
+      if (!/^0x[a-fA-F0-9]{40}$/.test(recipient)) { status("Invalid recipient address"); return; }
+      const abi = await (await fetch("abi.json")).json();
+      const c = new ethers.Contract(config.contractAddress, abi, signer);
+      // Optional: verify current account is owner
+      const ow = await c.owner();
+      if (ow.toLowerCase() !== account.toLowerCase()) { status("Only owner can sponsor"); return; }
+      const tx = await c.claimTo(recipient, code);
+      status("Sponsoring (owner claimTo)...");
+      await tx.wait();
+      status("Sponsored claim completed.");
     } catch (e) {
       console.error(e);
       status(e.shortMessage || e.message || String(e));

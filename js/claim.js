@@ -69,4 +69,34 @@
       status(e.shortMessage || e.message || String(e));
     }
   };
+
+  $("sponsoredClaim").onclick = async () => {
+    try {
+      const code = $("c1").value || "";
+      const recipient = $("recipient").value || "";
+      if (!code) { status("Enter C1"); return; }
+      if (!/^0x[a-fA-F0-9]{40}$/.test(recipient)) { status("Invalid recipient address"); return; }
+
+      // Optional: try to locally validate the hash against onchain claimHash
+      const abi = await (await fetch("abi.json")).json();
+      const readProvider = provider || new ethers.JsonRpcProvider("https://mainnet.optimism.io");
+      const c = new ethers.Contract(config.contractAddress, abi, readProvider);
+      let ok = true;
+      try {
+        const onchainHash = await c.claimHash();
+        const localHash = ethers.keccak256(ethers.toUtf8Bytes(code));
+        ok = (onchainHash.toLowerCase() === localHash.toLowerCase());
+      } catch (_) { /* older ABI without claimHash: skip local check */ }
+      if (!ok) { status("C1 does not match onchain claimHash"); return; }
+
+      const payload = { contract: config.contractAddress, chainId: config.chainId, recipient, c1: code };
+      const text = JSON.stringify(payload);
+      await navigator.clipboard.writeText(text);
+      status("Request copied. Send it to the sponsor to complete the mint.");
+      console.log("Sponsored claim request:", text);
+    } catch (e) {
+      console.error(e);
+      status(e.shortMessage || e.message || String(e));
+    }
+  };
 })(); 

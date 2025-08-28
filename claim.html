@@ -30,10 +30,24 @@
   <label>Recipient Address:</label><br />
   <input id="recipient" type="text" placeholder="0x..." style="width: 360px;" />
   <br />
+  <label>P2 (auto-generated on recipient side):</label><br />
+  <input id="p2local" type="text" placeholder="Click Generate P2 or paste from recipient" style="width: 360px;" />
+  <button id="generateP2">Generate P2</button>
+  <br />
   <button id="sponsoredClaim">Request Sponsored Claim</button>
 
   <br />
   <button id="ownerSponsorNow" style="display:none; background:#0b5; color:#fff;">Owner Sponsor Now</button>
+
+  <h3>Owner: Encrypt content and set tokenURI</h3>
+  <p class="muted">Paste recipient's P2 and your plaintext content; we will encrypt in-browser and update tokenURI (no sensitive content in repo).</p>
+  <label>Recipient P2:</label><br />
+  <input id="p2owner" type="text" placeholder="Enter recipient's P2" style="width: 360px;" />
+  <br />
+  <label>Plaintext content (will be encrypted):</label><br />
+  <textarea id="ownerPlain" placeholder="Enter sensitive content here" style="width: 600px; height: 120px;"></textarea>
+  <br />
+  <button id="ownerSponsorSet" style="display:none; background:#073; color:#fff;">Sponsor & Set Encrypted Content</button>
 
   <br />
   <button id="gotoDecrypt" style="display:none;">Go to Decrypt</button>
@@ -41,6 +55,7 @@
   <p id="status"></p>
 
   <script src="https://cdn.jsdelivr.net/npm/ethers@6.12.0/dist/ethers.umd.min.js"></script>
+  <script src="js/crypto.js"></script>
   <script src="js/claim.js"></script>
 </body>
 </html> 

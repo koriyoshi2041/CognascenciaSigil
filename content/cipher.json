@@ -1,8 +1,11 @@
 {
   "v": "1",
   "kdf": "PBKDF2",
-  "params": { "iterations": 250000, "salt": "AAAAAAAAAAAAAAAAAAAAAA==" },
+  "params": {
+    "iterations": 250000,
+    "salt": "o0kQfvKJ01lBd1V7ewiOFQ=="
+  },
   "cipher": "AES-GCM",
-  "iv": "AAAAAAAAAAAAAAAAAAA=",
-  "ciphertext": "" 
-} 
+  "iv": "zRaQ1Ctry8V+napK",
+  "ciphertext": "AGEzbO+diaalHD7zKx9mdaZdOnr3Bq49u/VMW2PY3fkP9dsxJ45JW3mp2yfee3yhegQ7dUS87MZHnrdrjPdyBGz3/bS+uc0w0EdA80vVzbJOLhMRGQk7mye7Wpc/ob4QpJgKRX2dGDU4"
+}

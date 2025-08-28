@@ -83,6 +83,9 @@
       status("Submitting tx...");
       await tx.wait();
       status("Claimed successfully. C1 is now invalid.");
+      // Show decrypt CTA for P2 flow
+      const btn = document.getElementById('gotoDecrypt');
+      if (btn) { btn.style.display = 'inline-block'; btn.onclick = () => { window.location.href = 'decrypt.html'; }; }
     } catch (e) {
       console.error(e);
       status(e.shortMessage || e.message || String(e));
@@ -135,6 +138,8 @@
       status("Sponsoring (owner claimTo)...");
       await tx.wait();
       status("Sponsored claim completed.");
+      const btn2 = document.getElementById('gotoDecrypt');
+      if (btn2) { btn2.style.display = 'inline-block'; btn2.onclick = () => { window.location.href = 'decrypt.html'; }; }
     } catch (e) {
       console.error(e);
       status(e.shortMessage || e.message || String(e));

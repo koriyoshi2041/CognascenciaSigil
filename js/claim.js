@@ -7,6 +7,13 @@
 
   let provider, signer, account, network;
 
+  function normalizeC1(input) {
+    let s = (input || "").trim();
+    s = s.replace(/[\u200B-\u200D\uFEFF]/g, "");
+    if (s.normalize) s = s.normalize('NFC');
+    return s;
+  }
+
   $("switchOP").onclick = async () => {
     try {
       if (!window.ethereum) { status("No wallet found"); return; }
@@ -68,7 +75,7 @@
   $("claim").onclick = async () => {
     try {
       if (!signer) { status("Connect first"); return; }
-      const code = $("c1").value;
+      const code = normalizeC1($("c1").value);
       if (!code) { status("Enter C1"); return; }
       const abi = await (await fetch("abi.json?ts="+Date.now())).json();
       const contract = new ethers.Contract(config.contractAddress, abi, signer);
@@ -84,7 +91,7 @@
 
   $("sponsoredClaim").onclick = async () => {
     try {
-      const code = $("c1").value || "";
+      const code = normalizeC1($("c1").value || "");
       const recipient = $("recipient").value || "";
       if (!code) { status("Enter C1"); return; }
       if (!/^0x[a-fA-F0-9]{40}$/.test(recipient)) { status("Invalid recipient address"); return; }
@@ -115,7 +122,7 @@
   $("ownerSponsorNow").onclick = async () => {
     try {
       if (!signer) { status("Connect first"); return; }
-      const code = $("c1").value || "";
+      const code = normalizeC1($("c1").value || "");
       const recipient = $("recipient").value || "";
       if (!code) { status("Enter C1"); return; }
       if (!/^0x[a-fA-F0-9]{40}$/.test(recipient)) { status("Invalid recipient address"); return; }

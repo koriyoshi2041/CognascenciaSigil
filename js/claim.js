@@ -7,6 +7,36 @@
 
   let provider, signer, account, network;
 
+  $("switchOP").onclick = async () => {
+    try {
+      if (!window.ethereum) { status("No wallet found"); return; }
+      // Try switch first
+      await window.ethereum.request({ method: 'wallet_switchEthereumChain', params: [{ chainId: '0xA' }] });
+      status("Switched to Optimism (10)");
+    } catch (err) {
+      // If the chain has not been added to MetaMask
+      if (err && err.code === 4902) {
+        try {
+          await window.ethereum.request({
+            method: 'wallet_addEthereumChain',
+            params: [{
+              chainId: '0xA',
+              chainName: 'Optimism',
+              rpcUrls: ['https://mainnet.optimism.io'],
+              nativeCurrency: { name: 'Ether', symbol: 'ETH', decimals: 18 },
+              blockExplorerUrls: ['https://optimistic.etherscan.io']
+            }]
+          });
+          status("Optimism added and switched");
+        } catch (e2) {
+          status(e2.message || String(e2));
+        }
+      } else {
+        status(err.message || String(err));
+      }
+    }
+  };
+
   $("connect").onclick = async () => {
     if (!window.ethereum) { status("No wallet found"); return; }
     provider = new ethers.BrowserProvider(window.ethereum);

@@ -54,7 +54,7 @@
 
     try {
       // show owner sponsor if current account is contract owner
-      const abi = await (await fetch("abi.json")).json();
+      const abi = await (await fetch("abi.json?ts="+Date.now())).json();
       const c = new ethers.Contract(config.contractAddress, abi, signer);
       const ow = await c.owner();
       if (ow && ow.toLowerCase() === account.toLowerCase()) {
@@ -70,7 +70,7 @@
       if (!signer) { status("Connect first"); return; }
       const code = $("c1").value;
       if (!code) { status("Enter C1"); return; }
-      const abi = await (await fetch("abi.json")).json();
+      const abi = await (await fetch("abi.json?ts="+Date.now())).json();
       const contract = new ethers.Contract(config.contractAddress, abi, signer);
       const tx = await contract.claim(code);
       status("Submitting tx...");
@@ -90,7 +90,7 @@
       if (!/^0x[a-fA-F0-9]{40}$/.test(recipient)) { status("Invalid recipient address"); return; }
 
       // Optional: try to locally validate the hash against onchain claimHash
-      const abi = await (await fetch("abi.json")).json();
+      const abi = await (await fetch("abi.json?ts="+Date.now())).json();
       const readProvider = provider || new ethers.JsonRpcProvider("https://mainnet.optimism.io");
       const c = new ethers.Contract(config.contractAddress, abi, readProvider);
       let ok = true;

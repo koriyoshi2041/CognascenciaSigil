@@ -12,7 +12,7 @@
 </head>
 <body>
   <h1>Claim NFT</h1>
-  <p class="muted">Connect your wallet and enter the one-time code C1 to claim the 1/1 locked NFT.</p>
+  <p class="muted">Owner will sponsor the mint. Enter C1 and recipient address. Sensitive content will be encrypted with P2 and set to tokenURI.</p>
   <button id="connect">Connect Wallet</button>
   <button id="switchOP">Switch to Optimism</button>
   <div>Account: <span id="account">-</span></div>
@@ -22,7 +22,7 @@
   <label>One-time code (C1):</label><br />
   <input id="c1" type="text" placeholder="Enter your C1" style="width: 360px;" />
   <br />
-  <button id="claim">Claim</button>
+  <!-- legacy self-claim removed -->
 
   <hr />
   <h3>Sponsored Claim (No Gas)</h3>
@@ -34,7 +34,7 @@
   <input id="p2local" type="text" placeholder="Click Generate P2 or paste from recipient" style="width: 360px;" />
   <button id="generateP2">Generate P2</button>
   <br />
-  <button id="sponsoredClaim">Request Sponsored Claim</button>
+  <!-- legacy request JSON removed -->
 
   <br />
   <button id="ownerSponsorNow" style="display:none; background:#0b5; color:#fff;">Owner Sponsor Now</button>

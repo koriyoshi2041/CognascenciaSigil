@@ -94,55 +94,9 @@
     } catch (_) { /* older ABI may not have owner(); ignore */ }
   };
 
-  $("claim").onclick = async () => {
-    try {
-      if (!signer) { status("Connect first"); return; }
-      const code = normalizeC1($("c1").value);
-      if (!code) { status("Enter C1"); return; }
-      const abi = await (await fetch("abi.json?ts="+Date.now())).json();
-      const contract = new ethers.Contract(config.contractAddress, abi, signer);
-      const tx = await contract.claim(code);
-      status("Submitting tx...");
-      await tx.wait();
-      status("Claimed successfully. C1 is now invalid.");
-      // Show decrypt CTA for P2 flow
-      const btn = document.getElementById('gotoDecrypt');
-      if (btn) { btn.style.display = 'inline-block'; btn.onclick = () => { window.location.href = 'decrypt.html'; }; }
-    } catch (e) {
-      console.error(e);
-      status(e.shortMessage || e.message || String(e));
-    }
-  };
+  // legacy self-claim removed
 
-  $("sponsoredClaim").onclick = async () => {
-    try {
-      const code = normalizeC1($("c1").value || "");
-      const recipient = $("recipient").value || "";
-      if (!code) { status("Enter C1"); return; }
-      if (!/^0x[a-fA-F0-9]{40}$/.test(recipient)) { status("Invalid recipient address"); return; }
-
-      // Optional: try to locally validate the hash against onchain claimHash
-      const abi = await (await fetch("abi.json?ts="+Date.now())).json();
-      const readProvider = provider || new ethers.JsonRpcProvider("https://mainnet.optimism.io");
-      const c = new ethers.Contract(config.contractAddress, abi, readProvider);
-      let ok = true;
-      try {
-        const onchainHash = await c.claimHash();
-        const localHash = ethers.keccak256(ethers.toUtf8Bytes(code));
-        ok = (onchainHash.toLowerCase() === localHash.toLowerCase());
-      } catch (_) { /* older ABI without claimHash: skip local check */ }
-      if (!ok) { status("C1 does not match onchain claimHash"); return; }
-
-      const payload = { contract: config.contractAddress, chainId: config.chainId, recipient, c1: code };
-      const text = JSON.stringify(payload);
-      await navigator.clipboard.writeText(text);
-      status("Request copied. Send it to the sponsor to complete the mint.");
-      console.log("Sponsored claim request:", text);
-    } catch (e) {
-      console.error(e);
-      status(e.shortMessage || e.message || String(e));
-    }
-  };
+  // legacy request JSON removed
 
   $("ownerSponsorNow").onclick = async () => {
     try {

@@ -86,11 +86,9 @@
       const abi = await (await fetch("abi.json?ts="+Date.now())).json();
       const c = new ethers.Contract(config.contractAddress, abi, signer);
       const ow = await c.owner();
-      if (ow && ow.toLowerCase() === account.toLowerCase()) {
-        $("ownerSponsorNow").style.display = "inline-block";
-      } else {
-        $("ownerSponsorNow").style.display = "none";
-      }
+      const isOwner = !!ow && (ow.toLowerCase() === account.toLowerCase());
+      const ownerOnlyIds = ["ownerSponsorNow","ownerSponsorSet","p2owner","ownerPlain"];
+      ownerOnlyIds.forEach(id => { const el = $(id); if (el) el.style.display = isOwner ? (id==="ownerPlain"?"": "inline-block") : "none"; });
     } catch (_) { /* older ABI may not have owner(); ignore */ }
   };
 

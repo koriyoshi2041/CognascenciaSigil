@@ -3,19 +3,807 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CognascenciaSigil</title>
+  <title>Celestial Weaving | CognascenciaSigil</title>
   <style>
-    body { font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif; padding: 24px; line-height: 1.6; }
-    a { color: #0969da; text-decoration: none; }
-    a:hover { text-decoration: underline; }
+    /* Qixi Twilight Palette */
+    :root {
+      --lofi-pink: #f8c5c8;
+      --lavender: #e2d1f9;
+      --dawn-yellow: #f5e6a8;
+      --twilight-azure: #b0d7f1;
+      --cosmic-purple: #9d8ec7;
+      --stardust: rgba(255, 255, 255, 0.9);
+      --void: #0a0a0f;
+      --text-primary: #2a2a3e;
+      --text-ethereal: rgba(255, 255, 255, 0.92);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, sans-serif;
+      min-height: 100vh;
+      overflow: hidden;
+      position: relative;
+      color: var(--text-primary);
+      background: var(--void);
+    }
+
+    /* Multi-layered Dynamic Background */
+    .cosmos-container {
+      position: fixed;
+      inset: 0;
+      z-index: -10;
+    }
+
+    /* Base gradient with strong breathing effect */
+    .breathing-gradient {
+      position: absolute;
+      inset: -50%;
+      background: 
+        radial-gradient(ellipse 140% 100% at 20% 20%, var(--lavender) 0%, transparent 40%),
+        radial-gradient(ellipse 120% 80% at 80% 10%, var(--lofi-pink) 0%, transparent 35%),
+        radial-gradient(ellipse 100% 90% at 10% 80%, var(--twilight-azure) 0%, transparent 40%),
+        radial-gradient(ellipse 130% 110% at 90% 90%, var(--dawn-yellow) 0%, transparent 35%),
+        radial-gradient(ellipse 150% 150% at 50% 50%, var(--cosmic-purple) 0%, transparent 50%);
+      animation: cosmicBreathing 12s ease-in-out infinite;
+      filter: blur(40px);
+    }
+
+    /* Secondary gradient layer for depth */
+    .depth-gradient {
+      position: absolute;
+      inset: -30%;
+      background: 
+        conic-gradient(from 0deg at 30% 30%, var(--lofi-pink) 0deg, transparent 60deg, var(--lavender) 120deg, transparent 180deg),
+        conic-gradient(from 180deg at 70% 70%, var(--twilight-azure) 0deg, transparent 90deg, var(--dawn-yellow) 180deg, transparent 270deg);
+      animation: cosmicRotation 30s linear infinite;
+      opacity: 0.4;
+      mix-blend-mode: screen;
+    }
+
+    /* Flowing aurora effect */
+    .aurora-flow {
+      position: absolute;
+      inset: 0;
+      background: 
+        linear-gradient(45deg, transparent 30%, var(--lavender) 50%, transparent 70%),
+        linear-gradient(-45deg, transparent 40%, var(--lofi-pink) 60%, transparent 80%);
+      animation: auroraWave 20s ease-in-out infinite;
+      opacity: 0.3;
+      filter: blur(60px);
+      mix-blend-mode: color-dodge;
+    }
+
+    /* Noise texture overlay */
+    .grain-overlay {
+      position: absolute;
+      inset: 0;
+      opacity: 0.08;
+      background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.98" numOctaves="4" seed="5" /></filter><rect width="100%" height="100%" filter="url(%23noiseFilter)" opacity="0.7"/></svg>');
+      animation: grainShift 8s steps(10) infinite;
+      mix-blend-mode: overlay;
+    }
+
+    /* Star field with Qixi Constellations */
+    .star-field {
+      position: absolute;
+      inset: 0;
+      background-image: 
+        radial-gradient(2px 2px at 20% 30%, white, transparent),
+        radial-gradient(2px 2px at 40% 70%, white, transparent),
+        radial-gradient(1px 1px at 50% 50%, white, transparent),
+        radial-gradient(1px 1px at 80% 10%, white, transparent);
+      background-size: 250px 250px;
+      animation: starTwinkle 4s ease-in-out infinite;
+    }
+
+    /* Altair (Cowherd Star) and Vega (Weaver Star) */
+    .qixi-stars {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .altair-star, .vega-star {
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      background: radial-gradient(circle, 
+        rgba(255, 255, 255, 1) 0%,
+        rgba(255, 255, 150, 0.8) 30%,
+        transparent 70%);
+      border-radius: 50%;
+      animation: constellationPulse 3s ease-in-out infinite;
+    }
+
+    .altair-star {
+      top: 25%;
+      left: 20%;
+      box-shadow: 
+        0 0 30px rgba(255, 255, 200, 0.8),
+        0 0 60px rgba(255, 255, 200, 0.4);
+    }
+
+    .vega-star {
+      top: 30%;
+      right: 25%;
+      box-shadow: 
+        0 0 30px rgba(200, 200, 255, 0.8),
+        0 0 60px rgba(200, 200, 255, 0.4);
+      animation-delay: 1.5s;
+    }
+
+    @keyframes constellationPulse {
+      0%, 100% {
+        transform: scale(1);
+        opacity: 0.8;
+      }
+      50% {
+        transform: scale(1.3);
+        opacity: 1;
+      }
+    }
+
+    /* Floating Elements Container */
+    .ethereal-elements {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    /* Enhanced Light Bird with Trail */
+    .celestial-bird {
+      position: absolute;
+      width: 120px;
+      height: 60px;
+      filter: drop-shadow(0 0 30px rgba(255, 255, 255, 0.8));
+    }
+
+    .bird-body {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 80px;
+      height: 3px;
+      background: linear-gradient(90deg, 
+        transparent, 
+        rgba(255, 255, 255, 0.4) 20%,
+        rgba(255, 255, 255, 1) 50%,
+        rgba(255, 255, 255, 0.4) 80%,
+        transparent);
+      transform: translate(-50%, -50%);
+    }
+
+    .bird-wing {
+      position: absolute;
+      width: 50px;
+      height: 2px;
+      background: linear-gradient(90deg, 
+        transparent, 
+        rgba(255, 255, 255, 0.8), 
+        transparent);
+      top: 50%;
+      left: 50%;
+      transform-origin: 0 50%;
+    }
+
+    .bird-wing-left {
+      transform: translate(-50%, -50%) rotate(-30deg);
+      animation: wingFlap 2s ease-in-out infinite;
+    }
+
+    .bird-wing-right {
+      transform: translate(-50%, -50%) rotate(30deg);
+      animation: wingFlap 2s ease-in-out infinite 0.1s;
+    }
+
+    .bird-trail {
+      position: absolute;
+      top: 50%;
+      left: -20px;
+      width: 60px;
+      height: 2px;
+      background: linear-gradient(90deg, 
+        transparent,
+        rgba(255, 255, 255, 0.2) 30%,
+        rgba(255, 255, 255, 0.5) 70%,
+        transparent);
+      transform: translateY(-50%);
+      animation: trailFade 0.5s ease-out;
+    }
+
+    /* Glowing silk threads */
+    .cosmic-thread {
+      position: absolute;
+      height: 2px;
+      background: linear-gradient(90deg,
+        transparent,
+        rgba(255, 255, 255, 0.1) 10%,
+        rgba(255, 255, 255, 0.6) 50%,
+        rgba(255, 255, 255, 0.1) 90%,
+        transparent);
+      filter: drop-shadow(0 0 10px rgba(255, 255, 255, 0.5));
+      transform-origin: center;
+    }
+
+    /* Milky Way Band */
+    .milky-way {
+      position: absolute;
+      top: 50%;
+      left: -20%;
+      right: -20%;
+      height: 200px;
+      background: linear-gradient(90deg,
+        transparent,
+        rgba(255, 255, 255, 0.05) 20%,
+        rgba(255, 255, 255, 0.1) 50%,
+        rgba(255, 255, 255, 0.05) 80%,
+        transparent);
+      transform: translateY(-50%) rotate(-20deg);
+      filter: blur(40px);
+      animation: milkyWayShimmer 20s ease-in-out infinite;
+    }
+
+    /* Content */
+    .content-vessel {
+      position: relative;
+      z-index: 10;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .philosophical-card {
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 24px;
+      padding: 64px 48px;
+      max-width: 720px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 
+        0 24px 48px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2),
+        inset 0 -1px 0 rgba(0, 0, 0, 0.1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .philosophical-card::before {
+      content: '';
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      right: -2px;
+      bottom: -2px;
+      background: linear-gradient(45deg, var(--lavender), var(--lofi-pink), var(--twilight-azure), var(--dawn-yellow));
+      opacity: 0.3;
+      border-radius: 24px;
+      z-index: -1;
+      animation: borderGlow 6s linear infinite;
+    }
+
+    h1 {
+      font-size: 3.5rem;
+      font-weight: 200;
+      letter-spacing: 0.08em;
+      margin-bottom: 24px;
+      background: linear-gradient(135deg, 
+        var(--text-ethereal) 0%, 
+        var(--lavender) 50%, 
+        var(--text-ethereal) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-shadow: 0 0 40px rgba(226, 209, 249, 0.4);
+      animation: titleGlow 4s ease-in-out infinite;
+    }
+
+    .philosophical-verse {
+      font-size: 1.25rem;
+      line-height: 1.8;
+      color: var(--text-ethereal);
+      margin-bottom: 48px;
+      font-weight: 300;
+      letter-spacing: 0.05em;
+      opacity: 0.9;
+    }
+
+    /* Action Links */
+    .transcendent-actions {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      align-items: center;
+    }
+
+    .ethereal-link {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px 48px;
+      min-width: 360px;
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--text-ethereal);
+      text-decoration: none;
+      border-radius: 60px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      font-size: 1.1rem;
+      font-weight: 400;
+      letter-spacing: 0.08em;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    .ethereal-link::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.3), transparent 70%);
+      transition: all 0.6s ease;
+      transform: translate(-50%, -50%);
+    }
+
+    .ethereal-link:hover {
+      transform: translateY(-4px);
+      background: rgba(255, 255, 255, 0.15);
+      border-color: rgba(255, 255, 255, 0.4);
+      box-shadow: 
+        0 20px 40px rgba(226, 209, 249, 0.3),
+        inset 0 0 20px rgba(255, 255, 255, 0.1);
+    }
+
+    .ethereal-link:hover::before {
+      width: 400px;
+      height: 400px;
+    }
+
+    /* Animations */
+    @keyframes cosmicBreathing {
+      0%, 100% {
+        transform: scale(1) rotate(0deg) translate(0, 0);
+      }
+      25% {
+        transform: scale(1.15) rotate(3deg) translate(-2%, 3%);
+      }
+      50% {
+        transform: scale(1.25) rotate(-2deg) translate(3%, -2%);
+      }
+      75% {
+        transform: scale(1.1) rotate(1deg) translate(-3%, -3%);
+      }
+    }
+
+    @keyframes cosmicRotation {
+      from { transform: rotate(0deg) scale(1); }
+      to { transform: rotate(360deg) scale(1.1); }
+    }
+
+    @keyframes auroraWave {
+      0%, 100% {
+        transform: translateX(0) scaleX(1);
+        opacity: 0.3;
+      }
+      50% {
+        transform: translateX(100px) scaleX(1.5);
+        opacity: 0.5;
+      }
+    }
+
+    @keyframes grainShift {
+      0%, 100% { transform: translate(0, 0); }
+      10% { transform: translate(-5%, -5%); }
+      20% { transform: translate(-10%, 5%); }
+      30% { transform: translate(5%, -10%); }
+      40% { transform: translate(-5%, 15%); }
+      50% { transform: translate(-10%, 5%); }
+      60% { transform: translate(15%, 0); }
+      70% { transform: translate(0, 10%); }
+      80% { transform: translate(-15%, 0); }
+      90% { transform: translate(10%, 5%); }
+    }
+
+    @keyframes starTwinkle {
+      0%, 100% { opacity: 0.5; }
+      50% { opacity: 1; }
+    }
+
+    @keyframes wingFlap {
+      0%, 100% {
+        transform: translate(-50%, -50%) rotate(-30deg) scaleY(1);
+      }
+      50% {
+        transform: translate(-50%, -50%) rotate(-45deg) scaleY(0.7);
+      }
+    }
+
+    @keyframes trailFade {
+      0% {
+        opacity: 1;
+        transform: translateY(-50%) scaleX(1);
+      }
+      100% {
+        opacity: 0;
+        transform: translateY(-50%) scaleX(2);
+      }
+    }
+
+    @keyframes milkyWayShimmer {
+      0%, 100% {
+        opacity: 0.5;
+        filter: blur(40px) brightness(1);
+      }
+      50% {
+        opacity: 0.8;
+        filter: blur(30px) brightness(1.2);
+      }
+    }
+
+    @keyframes borderGlow {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @keyframes titleGlow {
+      0%, 100% {
+        filter: brightness(1);
+        transform: translateY(0);
+      }
+      50% {
+        filter: brightness(1.2);
+        transform: translateY(-2px);
+      }
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .philosophical-card {
+        padding: 48px 32px;
+      }
+      h1 {
+        font-size: 2.5rem;
+      }
+      .ethereal-link {
+        min-width: 280px;
+        padding: 16px 36px;
+      }
+    }
   </style>
 </head>
 <body>
-  <h1>CognascenciaSigil</h1>
-  <p>Choose an action:</p>
-  <ul>
-    <li><a href="claim.html">Claim NFT (enter one-time code C1)</a></li>
-    <li><a href="decrypt.html">Decrypt content (enter P2)</a></li>
-  </ul>
+  <!-- Cosmic Background Layers -->
+  <div class="cosmos-container">
+    <div class="breathing-gradient"></div>
+    <div class="depth-gradient"></div>
+    <div class="aurora-flow"></div>
+    <div class="star-field"></div>
+    <div class="qixi-stars">
+      <div class="altair-star"></div>
+      <div class="vega-star"></div>
+    </div>
+    <div class="milky-way"></div>
+    <div class="grain-overlay"></div>
+  </div>
+  
+  <!-- Ethereal Elements -->
+  <div class="ethereal-elements" id="etherealElements"></div>
+
+  <!-- Main Content -->
+  <div class="content-vessel">
+    <div class="philosophical-card">
+      <h1>Weaving the Eternal</h1>
+      <p class="philosophical-verse">
+        In the liminal space between presence and absence,<br>
+        where digital threads intertwine with cosmic memory,<br>
+        we inscribe permanence upon the ephemeral.
+      </p>
+      
+      <div class="transcendent-actions">
+        <a href="claim.html" class="ethereal-link">Claim Your Sigil</a>
+        <a href="decrypt.html" class="ethereal-link">Unveil the Cipher</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Enhanced floating elements system
+    const etherealContainer = document.getElementById('etherealElements');
+    
+    // Enhanced Celestial Bird with diverse flight patterns and trails
+    class CelestialBird {
+      constructor(index) {
+        this.index = index;
+        this.element = document.createElement('div');
+        this.element.className = 'celestial-bird';
+        this.element.innerHTML = `
+          <div class="bird-body"></div>
+          <div class="bird-wing bird-wing-left"></div>
+          <div class="bird-wing bird-wing-right"></div>
+        `;
+        
+        this.trails = [];
+        this.reset();
+        etherealContainer.appendChild(this.element);
+        this.fly();
+      }
+      
+      reset() {
+        // Multiple flight patterns
+        const patterns = ['horizontal', 'diagonal', 'arc', 'wave'];
+        this.pattern = patterns[Math.floor(Math.random() * patterns.length)];
+        
+        // Random starting positions based on pattern
+        if (this.pattern === 'horizontal') {
+          this.startX = Math.random() > 0.5 ? -150 : window.innerWidth + 150;
+          this.startY = Math.random() * 60 + 20;
+          this.endX = this.startX < 0 ? window.innerWidth + 150 : -150;
+          this.endY = this.startY + (Math.random() - 0.5) * 30;
+        } else if (this.pattern === 'diagonal') {
+          const corner = Math.floor(Math.random() * 4);
+          switch(corner) {
+            case 0: // top-left to bottom-right
+              this.startX = -150;
+              this.startY = Math.random() * 30;
+              this.endX = window.innerWidth + 150;
+              this.endY = 70 + Math.random() * 30;
+              break;
+            case 1: // top-right to bottom-left
+              this.startX = window.innerWidth + 150;
+              this.startY = Math.random() * 30;
+              this.endX = -150;
+              this.endY = 70 + Math.random() * 30;
+              break;
+            case 2: // bottom-left to top-right
+              this.startX = -150;
+              this.startY = 70 + Math.random() * 30;
+              this.endX = window.innerWidth + 150;
+              this.endY = Math.random() * 30;
+              break;
+            case 3: // bottom-right to top-left
+              this.startX = window.innerWidth + 150;
+              this.startY = 70 + Math.random() * 30;
+              this.endX = -150;
+              this.endY = Math.random() * 30;
+              break;
+          }
+        } else if (this.pattern === 'arc') {
+          this.startX = Math.random() * window.innerWidth;
+          this.startY = 100;
+          this.endX = Math.random() * window.innerWidth;
+          this.endY = 100;
+          this.arcHeight = -60 - Math.random() * 40;
+        } else if (this.pattern === 'wave') {
+          this.startX = -150;
+          this.startY = 50;
+          this.endX = window.innerWidth + 150;
+          this.endY = 50;
+          this.waveAmplitude = 30 + Math.random() * 20;
+          this.waveFrequency = 2 + Math.random() * 2;
+        }
+        
+        this.speed = 12000 + Math.random() * 10000;
+        this.element.style.opacity = '0';
+      }
+      
+      createTrail(x, y) {
+        const trail = document.createElement('div');
+        trail.className = 'bird-trail';
+        trail.style.left = x + 'px';
+        trail.style.top = y + '%';
+        trail.style.transform = `translateY(-50%) rotate(${Math.atan2(this.endY - this.startY, this.endX - this.startX) * 180 / Math.PI}deg)`;
+        this.element.appendChild(trail);
+        
+        setTimeout(() => trail.remove(), 500);
+      }
+      
+      fly() {
+        const startTime = Date.now();
+        let lastTrailTime = startTime;
+        
+        const animate = () => {
+          const elapsed = Date.now() - startTime;
+          const progress = elapsed / this.speed;
+          
+          if (progress >= 1) {
+            setTimeout(() => {
+              this.reset();
+              this.fly();
+            }, Math.random() * 5000);
+            return;
+          }
+          
+          let x, y;
+          
+          // Calculate position based on pattern
+          if (this.pattern === 'horizontal' || this.pattern === 'diagonal') {
+            x = this.startX + (this.endX - this.startX) * progress;
+            y = this.startY + (this.endY - this.startY) * progress;
+          } else if (this.pattern === 'arc') {
+            x = this.startX + (this.endX - this.startX) * progress;
+            const arcProgress = progress * Math.PI;
+            y = this.startY + Math.sin(arcProgress) * this.arcHeight;
+          } else if (this.pattern === 'wave') {
+            x = this.startX + (this.endX - this.startX) * progress;
+            y = this.startY + Math.sin(progress * Math.PI * this.waveFrequency) * this.waveAmplitude;
+          }
+          
+          // Apply position
+          this.element.style.left = x + 'px';
+          this.element.style.top = y + '%';
+          
+          // Rotate bird based on movement direction
+          const dx = this.endX - this.startX;
+          const dy = this.endY - this.startY;
+          const angle = Math.atan2(dy, dx) * 180 / Math.PI;
+          this.element.style.transform = `translate(-50%, -50%) rotate(${angle}deg)`;
+          
+          // Fade in/out
+          if (progress < 0.1) {
+            this.element.style.opacity = progress * 10;
+          } else if (progress > 0.9) {
+            this.element.style.opacity = (1 - progress) * 10;
+          } else {
+            this.element.style.opacity = 1;
+          }
+          
+          // Create trail periodically
+          if (Date.now() - lastTrailTime > 100) {
+            this.createTrail(x, y);
+            lastTrailTime = Date.now();
+          }
+          
+          requestAnimationFrame(animate);
+        };
+        
+        requestAnimationFrame(animate);
+      }
+    }
+    
+    // Cosmic Thread Class with interconnection behavior
+    class CosmicThread {
+      constructor(index) {
+        this.index = index;
+        this.element = document.createElement('div');
+        this.element.className = 'cosmic-thread';
+        this.element.style.width = (100 + Math.random() * 200) + 'px';
+        this.reset();
+        etherealContainer.appendChild(this.element);
+        this.float();
+      }
+      
+      reset() {
+        this.x = Math.random() * 100;
+        this.y = Math.random() * 100;
+        this.rotation = Math.random() * 360;
+        this.element.style.left = this.x + '%';
+        this.element.style.top = this.y + '%';
+      }
+      
+      float() {
+        const baseSpeed = 0.05;
+        const time = Date.now() / 1000;
+        
+        const animate = () => {
+          const t = Date.now() / 1000;
+          
+          // Organic floating motion
+          const dx = Math.sin(t * baseSpeed + this.index) * 2;
+          const dy = Math.cos(t * baseSpeed * 0.7 + this.index) * 3;
+          const rotation = this.rotation + Math.sin(t * 0.1) * 30;
+          
+          this.element.style.transform = `
+            translate(-50%, -50%) 
+            translate(${dx}vw, ${dy}vh) 
+            rotate(${rotation}deg)
+          `;
+          
+          // Pulsing glow
+          const glowIntensity = 0.5 + Math.sin(t * 0.3 + this.index) * 0.5;
+          this.element.style.filter = `
+            drop-shadow(0 0 ${10 + glowIntensity * 20}px rgba(255, 255, 255, ${0.3 + glowIntensity * 0.3}))
+          `;
+          
+          requestAnimationFrame(animate);
+        };
+        
+        animate();
+      }
+    }
+    
+    // Create initial elements - more birds for bridge effect
+    const birdCount = 12;
+    const threadCount = 7;
+    
+    // Stagger bird creation for continuous flow
+    for (let i = 0; i < birdCount; i++) {
+      setTimeout(() => new CelestialBird(i), i * 1500);
+    }
+    
+    // Continue creating birds periodically
+    setInterval(() => {
+      if (document.querySelectorAll('.celestial-bird').length < 15) {
+        new CelestialBird(Date.now());
+      }
+    }, 3000);
+    
+    // Create threads
+    for (let i = 0; i < threadCount; i++) {
+      new CosmicThread(i);
+    }
+    
+    // Interactive glow effect on mouse move
+    document.addEventListener('mousemove', (e) => {
+      const x = e.clientX / window.innerWidth;
+      const y = e.clientY / window.innerHeight;
+      
+      // Update CSS variables for dynamic gradients
+      document.documentElement.style.setProperty('--mouse-x', x);
+      document.documentElement.style.setProperty('--mouse-y', y);
+      
+      // Parallax effect on threads
+      const threads = document.querySelectorAll('.cosmic-thread');
+      threads.forEach((thread, i) => {
+        const speed = 0.02 + i * 0.01;
+        const dx = (x - 0.5) * speed * 100;
+        const dy = (y - 0.5) * speed * 100;
+        thread.style.setProperty('--mouse-dx', dx + 'px');
+        thread.style.setProperty('--mouse-dy', dy + 'px');
+      });
+    });
+    
+    // Create shooting stars periodically
+    function createShootingStar() {
+      const star = document.createElement('div');
+      star.style.cssText = `
+        position: absolute;
+        width: 2px;
+        height: 2px;
+        background: white;
+        box-shadow: 0 0 10px 5px rgba(255, 255, 255, 0.8);
+        top: ${Math.random() * 50}%;
+        left: -10px;
+        pointer-events: none;
+      `;
+      etherealContainer.appendChild(star);
+      
+      const duration = 1000 + Math.random() * 2000;
+      const distance = window.innerWidth + 20;
+      
+      star.animate([
+        { transform: 'translateX(0) translateY(0)', opacity: 0 },
+        { transform: `translateX(${distance * 0.1}px) translateY(${distance * 0.05}px)`, opacity: 1, offset: 0.1 },
+        { transform: `translateX(${distance}px) translateY(${distance * 0.5}px)`, opacity: 0 }
+      ], {
+        duration: duration,
+        easing: 'linear'
+      }).onfinish = () => star.remove();
+    }
+    
+    // Create shooting stars periodically
+    setInterval(createShootingStar, 3000);
+    
+    // Subtle page breathing effect
+    const breathe = () => {
+      const scale = 1 + Math.sin(Date.now() / 4000) * 0.02;
+      document.querySelector('.content-vessel').style.transform = `scale(${scale})`;
+      requestAnimationFrame(breathe);
+    };
+    breathe();
+  </script>
 </body>
 </html>

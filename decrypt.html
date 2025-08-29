@@ -3,32 +3,776 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Decrypt | CognascenciaSigil</title>
+  <title>Unveil the Cipher | CognascenciaSigil</title>
   <style>
-    body { font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica, Arial, sans-serif; padding: 24px; }
-    textarea, input, button { font-size: 16px; padding: 8px 12px; margin: 6px 0; }
-    .muted { color: #57606a; font-size: 14px; }
-    pre { white-space: pre-wrap; word-break: break-word; background: #f6f8fa; padding: 12px; border-radius: 6px; }
+    /* Qixi Twilight Palette */
+    :root {
+      --lofi-pink: #f8c5c8;
+      --lavender: #e2d1f9;
+      --dawn-yellow: #f5e6a8;
+      --twilight-azure: #b0d7f1;
+      --cosmic-purple: #9d8ec7;
+      --stardust: rgba(255, 255, 255, 0.9);
+      --void: #0a0a0f;
+      --text-primary: #2a2a3e;
+      --text-ethereal: rgba(255, 255, 255, 0.92);
+      --text-muted: rgba(255, 255, 255, 0.6);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Helvetica Neue', -apple-system, BlinkMacSystemFont, sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+      position: relative;
+      color: var(--text-primary);
+      background: var(--void);
+    }
+
+    /* Multi-layered Dynamic Background */
+    .cosmos-container {
+      position: fixed;
+      inset: 0;
+      z-index: -10;
+    }
+
+    .breathing-gradient {
+      position: absolute;
+      inset: -50%;
+      background: 
+        radial-gradient(ellipse 140% 100% at 20% 20%, var(--lavender) 0%, transparent 40%),
+        radial-gradient(ellipse 120% 80% at 80% 10%, var(--lofi-pink) 0%, transparent 35%),
+        radial-gradient(ellipse 100% 90% at 10% 80%, var(--twilight-azure) 0%, transparent 40%),
+        radial-gradient(ellipse 130% 110% at 90% 90%, var(--dawn-yellow) 0%, transparent 35%),
+        radial-gradient(ellipse 150% 150% at 50% 50%, var(--cosmic-purple) 0%, transparent 50%);
+      animation: cosmicBreathing 12s ease-in-out infinite;
+      filter: blur(40px);
+    }
+
+    .aurora-flow {
+      position: absolute;
+      inset: 0;
+      background: 
+        linear-gradient(45deg, transparent 30%, var(--lavender) 50%, transparent 70%),
+        linear-gradient(-45deg, transparent 40%, var(--lofi-pink) 60%, transparent 80%);
+      animation: auroraWave 20s ease-in-out infinite;
+      opacity: 0.3;
+      filter: blur(60px);
+      mix-blend-mode: color-dodge;
+    }
+
+    .grain-overlay {
+      position: absolute;
+      inset: 0;
+      opacity: 0.08;
+      background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><filter id="noiseFilter"><feTurbulence type="fractalNoise" baseFrequency="0.98" numOctaves="4" seed="5" /></filter><rect width="100%" height="100%" filter="url(%23noiseFilter)" opacity="0.7"/></svg>');
+      animation: grainShift 8s steps(10) infinite;
+      mix-blend-mode: overlay;
+    }
+
+    /* Star field */
+    .star-field {
+      position: absolute;
+      inset: 0;
+      background-image: 
+        radial-gradient(2px 2px at 20% 30%, white, transparent),
+        radial-gradient(2px 2px at 40% 70%, white, transparent),
+        radial-gradient(1px 1px at 50% 50%, white, transparent),
+        radial-gradient(1px 1px at 80% 10%, white, transparent);
+      background-size: 250px 250px;
+      animation: starTwinkle 4s ease-in-out infinite;
+    }
+
+    /* Qixi Stars */
+    .qixi-stars {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .altair-star, .vega-star {
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      background: radial-gradient(circle, 
+        rgba(255, 255, 255, 1) 0%,
+        rgba(255, 255, 150, 0.8) 30%,
+        transparent 70%);
+      border-radius: 50%;
+      animation: constellationPulse 3s ease-in-out infinite;
+    }
+
+    .altair-star {
+      top: 10%;
+      left: 30%;
+      box-shadow: 
+        0 0 30px rgba(255, 255, 200, 0.8),
+        0 0 60px rgba(255, 255, 200, 0.4);
+    }
+
+    .vega-star {
+      top: 15%;
+      right: 25%;
+      box-shadow: 
+        0 0 30px rgba(200, 200, 255, 0.8),
+        0 0 60px rgba(200, 200, 255, 0.4);
+      animation-delay: 1.5s;
+    }
+
+    /* Ethereal Elements */
+    .ethereal-elements {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    /* Main Container */
+    .vessel {
+      position: relative;
+      z-index: 10;
+      min-height: 100vh;
+      padding: 40px 24px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    /* Header */
+    h1 {
+      font-size: 3rem;
+      font-weight: 200;
+      letter-spacing: 0.08em;
+      margin-bottom: 16px;
+      background: linear-gradient(135deg, 
+        var(--text-ethereal) 0%, 
+        var(--lavender) 50%, 
+        var(--text-ethereal) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-shadow: 0 0 40px rgba(226, 209, 249, 0.4);
+    }
+
+    h3 {
+      font-size: 1.5rem;
+      font-weight: 300;
+      margin: 40px 0 20px;
+      color: var(--text-ethereal);
+      letter-spacing: 0.05em;
+    }
+
+    /* Quantum Cards */
+    .quantum-card {
+      background: rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 20px;
+      padding: 40px;
+      margin-bottom: 30px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.15),
+        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    }
+
+    /* Transcendent Input Fields */
+    .transcendent-input {
+      position: relative;
+      margin: 20px 0;
+    }
+
+    .transcendent-input input {
+      width: 100%;
+      padding: 18px 24px;
+      font-size: 16px;
+      font-family: inherit;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 16px;
+      outline: none;
+      color: var(--text-ethereal);
+      transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+      letter-spacing: 0.02em;
+    }
+
+    .transcendent-input input::placeholder {
+      color: var(--text-muted);
+      font-style: italic;
+    }
+
+    .transcendent-input input:focus {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(255, 255, 255, 0.4);
+      box-shadow: 
+        0 0 0 4px rgba(255, 255, 255, 0.1),
+        0 0 30px rgba(226, 209, 249, 0.2);
+    }
+
+    /* Quantum Buttons */
+    .quantum-btn {
+      padding: 16px 36px;
+      font-size: 16px;
+      font-weight: 400;
+      letter-spacing: 0.06em;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+      margin: 8px;
+      text-transform: uppercase;
+    }
+
+    .quantum-btn::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.3), transparent);
+      transform: translate(-50%, -50%);
+      transition: all 0.6s ease;
+    }
+
+    .quantum-btn:hover::before {
+      width: 300px;
+      height: 300px;
+    }
+
+    .quantum-btn-primary {
+      background: linear-gradient(135deg, var(--lavender), var(--lofi-pink));
+      color: rgba(0, 0, 0, 0.8);
+      box-shadow: 0 8px 20px rgba(226, 209, 249, 0.3);
+    }
+
+    .quantum-btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 30px rgba(226, 209, 249, 0.5);
+    }
+
+    .quantum-btn-secondary {
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--text-ethereal);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .quantum-btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.15);
+      transform: translateY(-2px);
+      border-color: rgba(255, 255, 255, 0.5);
+    }
+
+    /* Revelation Box */
+    #out {
+      white-space: pre-wrap;
+      word-break: break-word;
+      background: rgba(255, 255, 255, 0.08);
+      padding: 32px;
+      border-radius: 16px;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      min-height: 150px;
+      font-size: 16px;
+      line-height: 1.8;
+      color: var(--text-ethereal);
+      letter-spacing: 0.02em;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 
+        inset 0 2px 10px rgba(0, 0, 0, 0.1),
+        0 0 30px rgba(226, 209, 249, 0.1);
+    }
+
+    #out:empty::before {
+      content: 'Awaiting revelation...';
+      color: var(--text-muted);
+      font-style: italic;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    /* Revelation Animation */
+    @keyframes revealContent {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+        filter: blur(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+        filter: blur(0);
+      }
+    }
+
+    .revealed-content {
+      animation: revealContent 1.2s ease-out;
+    }
+
+    /* Ephemeral Text */
+    .ephemeral {
+      color: var(--text-muted);
+      font-size: 14px;
+      line-height: 1.6;
+      margin: 8px 0;
+      font-style: italic;
+      letter-spacing: 0.03em;
+    }
+
+    /* Labels */
+    label {
+      display: block;
+      margin-bottom: 12px;
+      font-weight: 300;
+      letter-spacing: 0.05em;
+      color: var(--text-ethereal);
+      font-size: 15px;
+    }
+
+    /* Animations */
+    @keyframes cosmicBreathing {
+      0%, 100% {
+        transform: scale(1) rotate(0deg) translate(0, 0);
+      }
+      25% {
+        transform: scale(1.15) rotate(3deg) translate(-2%, 3%);
+      }
+      50% {
+        transform: scale(1.25) rotate(-2deg) translate(3%, -2%);
+      }
+      75% {
+        transform: scale(1.1) rotate(1deg) translate(-3%, -3%);
+      }
+    }
+
+    @keyframes auroraWave {
+      0%, 100% {
+        transform: translateX(0) scaleX(1);
+        opacity: 0.3;
+      }
+      50% {
+        transform: translateX(100px) scaleX(1.5);
+        opacity: 0.5;
+      }
+    }
+
+    @keyframes grainShift {
+      0%, 100% { transform: translate(0, 0); }
+      10% { transform: translate(-5%, -5%); }
+      30% { transform: translate(5%, -10%); }
+      50% { transform: translate(-10%, 5%); }
+      70% { transform: translate(0, 10%); }
+      90% { transform: translate(10%, 5%); }
+    }
+
+    @keyframes starTwinkle {
+      0%, 100% { opacity: 0.5; }
+      50% { opacity: 1; }
+    }
+
+    @keyframes constellationPulse {
+      0%, 100% {
+        transform: scale(1);
+        opacity: 0.8;
+      }
+      50% {
+        transform: scale(1.3);
+        opacity: 1;
+      }
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .quantum-card {
+        padding: 30px 20px;
+      }
+      h1 {
+        font-size: 2.5rem;
+      }
+      h3 {
+        font-size: 1.3rem;
+      }
+    }
   </style>
 </head>
 <body>
-  <h1>Decrypt content</h1>
-  <p class="muted">Content is publicly hosted as encrypted JSON. Enter P2 to decrypt locally in your browser.</p>
+  <!-- Cosmic Background -->
+  <div class="cosmos-container">
+    <div class="breathing-gradient"></div>
+    <div class="aurora-flow"></div>
+    <div class="star-field"></div>
+    <div class="qixi-stars">
+      <div class="altair-star"></div>
+      <div class="vega-star"></div>
+    </div>
+    <div class="grain-overlay"></div>
+  </div>
+  
+  <!-- Ethereal Elements -->
+  <div class="ethereal-elements" id="etherealElements"></div>
 
-  <label>Encrypted JSON URL:</label><br />
-  <input id="url" type="text" style="width: 600px;" value="content/cipher.json" />
-  <br />
-  <label>Decryption passphrase (P2):</label><br />
-  <input id="p2" type="password" placeholder="Enter P2" style="width: 360px;" />
-  <br />
-  <button id="load">Load & Decrypt</button>
-  <button id="loadFromTokenURI">Load tokenURI & Decrypt</button>
+  <!-- Main Content -->
+  <div class="vessel">
+    <h1>Unveil the Cipher</h1>
+    <p class="ephemeral">Where encrypted whispers transform into illuminated truth</p>
+    
+    <div class="quantum-card">
+      <label>Location of the Encrypted Vessel</label>
+      <p class="ephemeral">The path to the encoded message in the cosmic repository</p>
+      <div class="transcendent-input">
+        <input id="url" type="text" value="content/cipher.json" />
+      </div>
+      
+      <label>The Key of Revelation (P2)</label>
+      <p class="ephemeral">The passphrase that dissolves the veil between hidden and revealed</p>
+      <div class="transcendent-input">
+        <input id="p2" type="password" placeholder="Enter the sacred key..." />
+      </div>
+      
+      <button id="load" class="quantum-btn quantum-btn-primary">Initiate Decryption</button>
+      <button id="loadFromTokenURI" class="quantum-btn quantum-btn-secondary">Decrypt from Chain</button>
+    </div>
 
-  <h3>Decrypted Text</h3>
-  <pre id="out"></pre>
+    <div class="quantum-card">
+      <h3>The Revealed Message</h3>
+      <p class="ephemeral">What was once concealed now emerges into consciousness</p>
+      <pre id="out"></pre>
+    </div>
+  </div>
 
   <script src="https://cdn.jsdelivr.net/npm/ethers@6.12.0/dist/ethers.umd.min.js"></script>
-  <script src="js/crypto.js"></script>
-  <script src="js/decrypt.js"></script>
+    <script src="js/crypto.js"></script>
+    <script src="js/decrypt.js"></script>
+  
+  <script>
+    // Enhanced floating elements
+    const etherealContainer = document.getElementById('etherealElements');
+    
+    // Constellation Pattern
+    class ConstellationNode {
+      constructor(x, y) {
+        this.x = x;
+        this.y = y;
+        this.element = document.createElement('div');
+        this.element.style.cssText = `
+          position: absolute;
+          width: 6px;
+          height: 6px;
+          background: radial-gradient(circle, rgba(255, 255, 255, 0.9), transparent);
+          border-radius: 50%;
+          left: ${x}%;
+          top: ${y}%;
+          transform: translate(-50%, -50%);
+          box-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
+        `;
+        etherealContainer.appendChild(this.element);
+      }
+      
+      pulse() {
+        const scale = 1 + Math.sin(Date.now() / 1000) * 0.3;
+        const opacity = 0.6 + Math.sin(Date.now() / 1500) * 0.4;
+        this.element.style.transform = `translate(-50%, -50%) scale(${scale})`;
+        this.element.style.opacity = opacity;
+      }
+    }
+    
+    // Create constellation
+    const nodes = [];
+    for (let i = 0; i < 7; i++) {
+      const node = new ConstellationNode(
+        20 + Math.random() * 60,
+        20 + Math.random() * 60
+      );
+      nodes.push(node);
+    }
+    
+    // Animate constellation
+    function animateConstellation() {
+      nodes.forEach(node => node.pulse());
+      requestAnimationFrame(animateConstellation);
+    }
+    animateConstellation();
+    
+    // Connect nodes with ethereal threads
+    function createConstellationLine(node1, node2) {
+      const line = document.createElement('div');
+      const dx = node2.x - node1.x;
+      const dy = node2.y - node1.y;
+      const distance = Math.sqrt(dx * dx + dy * dy);
+      const angle = Math.atan2(dy, dx) * 180 / Math.PI;
+      
+      line.style.cssText = `
+        position: absolute;
+        width: ${distance}%;
+        height: 1px;
+        background: linear-gradient(90deg, 
+          transparent, 
+          rgba(255, 255, 255, 0.2) 30%, 
+          rgba(255, 255, 255, 0.2) 70%, 
+          transparent);
+        left: ${node1.x}%;
+        top: ${node1.y}%;
+        transform-origin: 0 50%;
+        transform: rotate(${angle}deg);
+        opacity: 0.5;
+      `;
+      etherealContainer.appendChild(line);
+      
+      // Pulse animation
+      const pulseLine = () => {
+        const opacity = 0.2 + Math.sin(Date.now() / 2000) * 0.3;
+        line.style.opacity = opacity;
+        requestAnimationFrame(pulseLine);
+      };
+      pulseLine();
+    }
+    
+    // Connect some nodes
+    if (nodes.length > 3) {
+      createConstellationLine(nodes[0], nodes[1]);
+      createConstellationLine(nodes[1], nodes[2]);
+      createConstellationLine(nodes[2], nodes[3]);
+      createConstellationLine(nodes[0], nodes[3]);
+    }
+    
+    // Floating orbs
+    function createFloatingOrb() {
+      const orb = document.createElement('div');
+      const size = 20 + Math.random() * 40;
+      const startX = Math.random() * 100;
+      const startY = 100 + size;
+      
+      orb.style.cssText = `
+        position: absolute;
+        width: ${size}px;
+        height: ${size}px;
+        background: radial-gradient(circle, 
+          rgba(255, 255, 255, 0.3), 
+          transparent 70%);
+        border-radius: 50%;
+        left: ${startX}%;
+        top: ${startY}px;
+        filter: blur(2px);
+        pointer-events: none;
+      `;
+      etherealContainer.appendChild(orb);
+      
+      const duration = 15000 + Math.random() * 10000;
+      const swayX = (Math.random() - 0.5) * 200;
+      
+      orb.animate([
+        { transform: 'translateY(0) translateX(0) scale(0)', opacity: 0 },
+        { transform: `translateY(-30vh) translateX(${swayX * 0.3}px) scale(1)`, opacity: 0.6, offset: 0.3 },
+        { transform: `translateY(-60vh) translateX(${swayX}px) scale(0.8)`, opacity: 0.4, offset: 0.7 },
+        { transform: `translateY(-100vh) translateX(${swayX * 0.5}px) scale(0.5)`, opacity: 0 }
+      ], {
+        duration: duration,
+        easing: 'ease-out'
+      }).onfinish = () => orb.remove();
+    }
+    
+    // Create orbs periodically
+    setInterval(createFloatingOrb, 4000);
+    createFloatingOrb();
+    
+    // Enhanced decrypt animation
+    const originalUpdateOut = window.updateOut;
+    if (typeof originalUpdateOut === 'function') {
+      window.updateOut = function(content) {
+        const outElement = document.getElementById('out');
+        if (outElement) {
+          // Create reveal effect
+          outElement.style.opacity = '0';
+          outElement.innerHTML = `<div class="revealed-content">${content}</div>`;
+          
+          setTimeout(() => {
+            outElement.style.transition = 'opacity 1s ease';
+            outElement.style.opacity = '1';
+            
+            // Create shimmer effect
+            const shimmer = document.createElement('div');
+            shimmer.style.cssText = `
+              position: absolute;
+              top: 0;
+              left: -100%;
+              width: 100%;
+              height: 100%;
+              background: linear-gradient(90deg, 
+                transparent, 
+                rgba(255, 255, 255, 0.2), 
+                transparent);
+              animation: shimmerPass 2s ease;
+            `;
+            outElement.appendChild(shimmer);
+            
+            setTimeout(() => shimmer.remove(), 2000);
+          }, 100);
+        }
+      };
+    }
+    
+    // Add shimmer animation
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes shimmerPass {
+        to { left: 100%; }
+      }
+      @keyframes wingFlap {
+        0%, 100% { transform: translate(-50%, -50%) rotate(-30deg) scaleY(1); }
+        50% { transform: translate(-50%, -50%) rotate(-45deg) scaleY(0.7); }
+      }
+    `;
+    document.head.appendChild(style);
+    
+    // Add flowing light birds
+    class LuminousBird {
+      constructor() {
+        this.element = document.createElement('div');
+        this.element.style.cssText = `
+          position: absolute;
+          width: 90px;
+          height: 50px;
+          pointer-events: none;
+          filter: drop-shadow(0 0 20px rgba(255,255,255,0.8));
+        `;
+        
+        // Enhanced bird with glowing trail - abstract lines
+        this.element.innerHTML = `
+          <div style="
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 70px;
+            height: 3px;
+            background: linear-gradient(90deg, 
+              transparent,
+              rgba(255,255,255,0.4) 20%,
+              rgba(200,200,255,1) 50%,
+              rgba(255,255,255,0.4) 80%,
+              transparent);
+            transform: translate(-50%, -50%);
+          "></div>
+          <div style="
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 45px;
+            height: 2px;
+            background: linear-gradient(90deg, 
+              transparent, 
+              rgba(200,200,255,0.8), 
+              transparent);
+            transform: translate(-50%, -50%) rotate(-30deg);
+            transform-origin: center;
+            animation: wingFlap 1.8s ease-in-out infinite;
+          "></div>
+          <div style="
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 45px;
+            height: 2px;
+            background: linear-gradient(90deg, 
+              transparent, 
+              rgba(200,200,255,0.8), 
+              transparent);
+            transform: translate(-50%, -50%) rotate(30deg);
+            transform-origin: center;
+            animation: wingFlap 1.8s ease-in-out infinite 0.1s;
+          "></div>
+        `;
+        
+        etherealContainer.appendChild(this.element);
+        this.createPath();
+      }
+      
+      createPath() {
+        const paths = [
+          // Diagonal descent
+          {
+            start: { x: -100, y: 10 },
+            end: { x: window.innerWidth + 100, y: 80 },
+            curve: 'cubic-bezier(0.4, 0, 0.6, 1)'
+          },
+          // Arc path
+          {
+            start: { x: window.innerWidth * 0.2, y: 90 },
+            end: { x: window.innerWidth * 0.8, y: 90 },
+            mid: { y: 20 },
+            curve: 'ease-in-out'
+          },
+          // Wave path
+          {
+            start: { x: -100, y: 50 },
+            end: { x: window.innerWidth + 100, y: 50 },
+            wave: true,
+            curve: 'linear'
+          }
+        ];
+        
+        const path = paths[Math.floor(Math.random() * paths.length)];
+        const duration = 12000 + Math.random() * 8000;
+        
+        this.element.style.left = path.start.x + 'px';
+        this.element.style.top = path.start.y + '%';
+        
+        let keyframes;
+        if (path.wave) {
+          keyframes = [];
+          for (let i = 0; i <= 10; i++) {
+            const progress = i / 10;
+            const x = path.start.x + (path.end.x - path.start.x) * progress;
+            const y = path.start.y + Math.sin(progress * Math.PI * 3) * 15;
+            keyframes.push({
+              left: x + 'px',
+              top: y + '%',
+              opacity: i === 0 || i === 10 ? 0 : 1,
+              offset: progress
+            });
+          }
+        } else if (path.mid) {
+          keyframes = [
+            { left: path.start.x + 'px', top: path.start.y + '%', opacity: 0 },
+            { left: path.start.x + 50 + 'px', top: path.start.y + '%', opacity: 1, offset: 0.1 },
+            { left: (path.start.x + path.end.x) / 2 + 'px', top: path.mid.y + '%', opacity: 1, offset: 0.5 },
+            { left: path.end.x - 50 + 'px', top: path.end.y + '%', opacity: 1, offset: 0.9 },
+            { left: path.end.x + 'px', top: path.end.y + '%', opacity: 0 }
+          ];
+        } else {
+          keyframes = [
+            { left: path.start.x + 'px', top: path.start.y + '%', opacity: 0 },
+            { opacity: 1, offset: 0.1 },
+            { opacity: 1, offset: 0.9 },
+            { left: path.end.x + 'px', top: path.end.y + '%', opacity: 0 }
+          ];
+        }
+        
+        this.element.animate(keyframes, {
+          duration: duration,
+          easing: path.curve
+        }).onfinish = () => {
+          this.element.remove();
+          setTimeout(() => new LuminousBird(), 2000 + Math.random() * 5000);
+        };
+      }
+    }
+    
+    // Initialize luminous birds
+    for (let i = 0; i < 4; i++) {
+      setTimeout(() => new LuminousBird(), i * 3000);
+    }
+  </script>
 </body>
 </html> 
